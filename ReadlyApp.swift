@@ -9,9 +9,22 @@ import SwiftUI
 
 @main
 struct ReadlyApp: App {
+    @StateObject private var viewModel = LibraryViewModel()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TabView {
+                LibraryView(viewModel: viewModel)
+                    .tabItem {
+                        Label("Library", systemImage: "book.fill")
+                    }
+
+                RecycleBinView(viewModel: viewModel)
+                    .tabItem {
+                        Label("Recycle Bin", systemImage: "trash.fill")
+                    }
+            }
         }
     }
 }
+
