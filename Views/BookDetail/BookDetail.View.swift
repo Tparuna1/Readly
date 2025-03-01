@@ -12,11 +12,13 @@ struct BookDetailView: View {
     @State private var book: Book
     @Environment(\.dismiss) private var dismiss
     var isFromRecycleBin: Bool = false
+    let progress: Double
 
-    init(book: Book, viewModel: LibraryViewModel, isFromRecycleBin: Bool = false) {
+    init(book: Book, viewModel: LibraryViewModel, isFromRecycleBin: Bool = false, progress: Double) {
         self.viewModel = viewModel
         self._book = State(initialValue: book)
         self.isFromRecycleBin = isFromRecycleBin
+        self.progress = progress
     }
 
     var body: some View {
@@ -38,6 +40,9 @@ struct BookDetailView: View {
                     .onChange(of: book.readingProgress) { _ in
                         viewModel.updateBook(book)
                     }
+                Text("\(Int(progress * 100))% Completed")
+                    .font(.caption)
+                    .foregroundColor(.gray)
             }
 
             if isFromRecycleBin {

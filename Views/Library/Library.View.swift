@@ -16,7 +16,7 @@ struct LibraryView: View {
                 if !viewModel.books.filter({ $0.status == .currentlyReading && $0.deletedDate == nil }).isEmpty {
                     Section(header: Text("Currently Reading")) {
                         ForEach(viewModel.books.filter { $0.status == .currentlyReading && $0.deletedDate == nil }) { book in
-                            NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel)) {
+                            NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, progress: book.readingProgress / 100)) {
                                 BookCardView(book: book)
                             }
                         }
@@ -26,7 +26,7 @@ struct LibraryView: View {
                 if !viewModel.books.filter({ $0.status == .wantToRead && $0.deletedDate == nil }).isEmpty {
                     Section(header: Text("Want to Read")) {
                         ForEach(viewModel.books.filter { $0.status == .wantToRead && $0.deletedDate == nil }) { book in
-                            NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel)) {
+                            NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, progress: book.readingProgress / 100)) {
                                 BookCardView(book: book)
                             }
                         }
@@ -36,7 +36,7 @@ struct LibraryView: View {
                 if !viewModel.books.filter({ $0.status == .read && $0.deletedDate == nil }).isEmpty {
                     Section(header: Text("Read")) {
                         ForEach(viewModel.books.filter { $0.status == .read && $0.deletedDate == nil }) { book in
-                            NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel)) {
+                            NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, progress: book.readingProgress / 100)) {
                                 BookCardView(book: book)
                             }
                         }
