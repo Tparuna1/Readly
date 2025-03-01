@@ -6,11 +6,9 @@
 //
 
 import Foundation
-import Combine
 
 class LibraryViewModel: ObservableObject {
     @Published var books: [Book] = []
-    private var cancellables = Set<AnyCancellable>()
     
     init() {
         loadBooks()
