@@ -13,7 +13,6 @@ struct LibraryView: View {
     var body: some View {
         NavigationView {
             List {
-                // Filter books to only show those that are not deleted
                 if !viewModel.books.filter({ $0.status == .currentlyReading && $0.deletedDate == nil }).isEmpty {
                     Section(header: Text("Currently Reading")) {
                         ForEach(viewModel.books.filter { $0.status == .currentlyReading && $0.deletedDate == nil }) { book in

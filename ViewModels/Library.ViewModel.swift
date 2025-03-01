@@ -38,15 +38,10 @@ class LibraryViewModel: ObservableObject {
     func restoreBook(_ book: Book) {
         if let index = books.firstIndex(where: { $0.id == book.id }) {
             books[index].deletedDate = nil
-            
             saveBooks()
-            
             loadBooks()
-
-            print("Book restored: \(books[index].title)")
         }
     }
-
     
     func permanentlyDeleteBook(_ book: Book) {
         books.removeAll { $0.id == book.id }

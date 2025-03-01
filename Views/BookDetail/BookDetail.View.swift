@@ -5,22 +5,18 @@
 //  Created by tornike <parunashvili on 01.03.25.
 //
 
-//
-//  BookDetail.View.swift
-//  Readly
-//
-//  Created by tornike <parunashvili on 01.03.25.
-//
-
 import SwiftUI
 
 struct BookDetailView: View {
     @ObservedObject var viewModel: LibraryViewModel
     @State private var book: Book
+    @Environment(\.dismiss) private var dismiss
+    var isFromRecycleBin: Bool = false
 
-    init(book: Book, viewModel: LibraryViewModel) {
+    init(book: Book, viewModel: LibraryViewModel, isFromRecycleBin: Bool = false) {
         self.viewModel = viewModel
         self._book = State(initialValue: book)
+        self.isFromRecycleBin = isFromRecycleBin
     }
 
     var body: some View {
@@ -44,11 +40,21 @@ struct BookDetailView: View {
                     }
             }
 
-            Section {
-                Button("Move to Recycle Bin") {
-                    viewModel.moveToRecycleBin(book)
+            if isFromRecycleBin {
+                Section {
+                    Button("Restore Book") {
+                        viewModel.restoreBook(book)
+                        dismiss()
+                    }
+                    .foregroundColor(.green)
                 }
-                .foregroundColor(.red)
+            } else {
+                Section {
+                    Button("Move to Recycle Bin") {
+                        viewModel.moveToRecycleBin(book)
+                    }
+                    .foregroundColor(.red)
+                }
             }
         }
         .navigationTitle("Book Details")

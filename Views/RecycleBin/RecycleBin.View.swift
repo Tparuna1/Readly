@@ -11,29 +11,15 @@ struct RecycleBinView: View {
     @ObservedObject var viewModel: LibraryViewModel
 
     var body: some View {
-        List {
-            ForEach(viewModel.books.filter { $0.deletedDate != nil }) { book in
-                HStack {
-                    BookCardView(book: book)
-
-                    Spacer()
-
-                    Button(action: {
-                        viewModel.restoreBook(book)
-                    }) {
-                        Image(systemName: "arrow.uturn.backward.circle.fill")
-                            .foregroundColor(.blue)
-                    }
-
-                    Button(action: {
-                        viewModel.permanentlyDeleteBook(book)
-                    }) {
-                        Image(systemName: "trash")
-                            .foregroundColor(.red)
+        NavigationStack {
+            List {
+                ForEach(viewModel.books.filter { $0.deletedDate != nil }) { book in
+                    NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, isFromRecycleBin: true)) {
+                        BookCardView(book: book)
                     }
                 }
             }
+            .navigationTitle("Recycle Bin")
         }
-        .navigationTitle("Recycle Bin")
     }
 }
