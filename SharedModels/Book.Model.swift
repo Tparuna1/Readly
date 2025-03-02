@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 
 enum BookStatus: String, CaseIterable, Codable {
     case read = "Read"
@@ -22,8 +21,9 @@ struct Book: Identifiable, Codable {
     var readingProgress: Double
     var deletedDate: Date?
     var coverImageData: Data?
+    var notes: String
 
-    init(id: UUID = UUID(), title: String, author: String, status: BookStatus, readingProgress: Double = 0.0, deletedDate: Date? = nil, coverImageData: Data? = nil) {
+    init(id: UUID = UUID(), title: String, author: String, status: BookStatus, readingProgress: Double = 0.0, deletedDate: Date? = nil, coverImageData: Data? = nil, notes: String = "") {
         self.id = id
         self.title = title
         self.author = author
@@ -31,5 +31,6 @@ struct Book: Identifiable, Codable {
         self.readingProgress = readingProgress
         self.deletedDate = deletedDate
         self.coverImageData = coverImageData
+        self.notes = notes
     }
 }

@@ -1,0 +1,33 @@
+/* 
+  Localizable.strings
+  Readly
+
+  Created by tornike <parunashvili on 02.03.25.
+  
+*/
+
+// MARK: - Components
+"components.status.text" = "Status";
+"components.reading_progress.text" = "Reading progress";
+"components.completed.text" = "Completed";
+"components.currently_reading.text" = "Currently Reading";
+"components.want_to_read.text" = "Want to Read";
+"components.read.text" = "Read";
+"components.cancel.button" = "Cancel";
+"components.select.button" = "Select";
+
+// MARK: - Book
+"book.title.text" = "Title";
+"book.author.text" = "Author";
+"book.book_cover.text" = "Book Cover";
+"book.select_cover_image.button" = "Select Cover Image";
+"book.add_book.button" = "Add Book";
+"book.save.button" = "Save";
+"book.notes.text" = "Notes";
+"book.restore_book.button" = "Restore Book";
+"book.move_to_recycle_bin.button" = "Move to Recycle Bin";
+"book.book_details.title" = "Book Details";
+"book.my_library.title" = "My Library";
+"book.restore.button" = "Restore";
+"book.delete.button" = "Delete";
+"book.recycle_bin.title" = "Recycle Bin";

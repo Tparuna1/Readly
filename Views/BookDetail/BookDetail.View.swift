@@ -23,10 +23,10 @@ struct BookDetailView: View {
 
     var body: some View {
         Form {
-            TextField("Title", text: $book.title)
-            TextField("Author", text: $book.author)
+            TextField(LocalizedStrings.Book.Title.text, text: $book.title)
+            TextField(LocalizedStrings.Book.Author.text, text: $book.author)
 
-            Picker("Status", selection: $book.status) {
+            Picker(LocalizedStrings.Components.Status.text, selection: $book.status) {
                 ForEach(BookStatus.allCases, id: \.self) { status in
                     Text(status.rawValue).tag(status)
                 }
@@ -35,19 +35,30 @@ struct BookDetailView: View {
                 viewModel.updateBook(book)
             }
 
-            Section(header: Text("Reading Progress")) {
+            Section(header: Text(LocalizedStrings.Components.ReadingProgress.text)) {
                 Slider(value: $book.readingProgress, in: 0...100, step: 1)
                     .onChange(of: book.readingProgress) { _ in
                         viewModel.updateBook(book)
                     }
-                Text("\(Int(progress * 100))% Completed")
+                Text("\(Int(book.readingProgress))%  \(LocalizedStrings.Components.Completed.text)")
                     .font(.caption)
                     .foregroundColor(.gray)
             }
 
+            Section(header: Text(LocalizedStrings.Book.Notes.text)) {
+                TextEditor(text: $book.notes)
+                    .frame(minHeight: 100)
+                    .padding(4)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(8)
+                    .onChange(of: book.notes) { _ in
+                        viewModel.updateBook(book)
+                    }
+            }
+
             if isFromRecycleBin {
                 Section {
-                    Button("Restore Book") {
+                    Button(LocalizedStrings.Book.RestoreBook.button) {
                         viewModel.restoreBook(book)
                         dismiss()
                     }
@@ -55,13 +66,13 @@ struct BookDetailView: View {
                 }
             } else {
                 Section {
-                    Button("Move to Recycle Bin") {
+                    Button(LocalizedStrings.Book.MoveToRecycleBin.button) {
                         viewModel.moveToRecycleBin(book)
                     }
                     .foregroundColor(.red)
                 }
             }
         }
-        .navigationTitle("Book Details")
+        .navigationTitle(LocalizedStrings.Book.BookDetails.title)
     }
 }

@@ -21,16 +21,16 @@ struct AddBookView: View {
     var body: some View {
         NavigationView {
             Form {
-                TextField("Title", text: $title)
-                TextField("Author", text: $author)
+                TextField(LocalizedStrings.Book.Title.text, text: $title)
+                TextField(LocalizedStrings.Book.Author.text, text: $author)
 
-                Picker("Status", selection: $status) {
+                Picker(LocalizedStrings.Components.Status.text, selection: $status) {
                     ForEach(BookStatus.allCases, id: \.self) { status in
                         Text(status.rawValue).tag(status)
                     }
                 }
 
-                Section(header: Text("Book Cover")) {
+                Section(header: Text(LocalizedStrings.Book.BookCover.text)) {
                     if let selectedImage = selectedImage {
                         Image(uiImage: selectedImage)
                             .resizable()
@@ -39,15 +39,15 @@ struct AddBookView: View {
                             .cornerRadius(10)
                     }
 
-                    Button("Select Cover Image") {
+                    Button(LocalizedStrings.Book.SelectCoverImage.button) {
                         showImagePicker = true
                     }
                 }
             }
-            .navigationTitle("Add Book")
+            .navigationTitle(LocalizedStrings.Book.AddBook.button)
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
-                    Button("Save") {
+                    Button(LocalizedStrings.Book.AddBook.button) {
                         let newBook = Book(
                             title: title,
                             author: author,

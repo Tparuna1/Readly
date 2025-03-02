@@ -14,7 +14,7 @@ struct LibraryView: View {
         NavigationView {
             List {
                 if !viewModel.books.filter({ $0.status == .currentlyReading && $0.deletedDate == nil }).isEmpty {
-                    Section(header: Text("Currently Reading")) {
+                    Section(header: Text(LocalizedStrings.Components.CurrentlyReading.text)) {
                         ForEach(viewModel.books.filter { $0.status == .currentlyReading && $0.deletedDate == nil }) { book in
                             NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, progress: book.readingProgress / 100)) {
                                 BookCardView(book: book)
@@ -24,7 +24,7 @@ struct LibraryView: View {
                 }
 
                 if !viewModel.books.filter({ $0.status == .wantToRead && $0.deletedDate == nil }).isEmpty {
-                    Section(header: Text("Want to Read")) {
+                    Section(header: Text(LocalizedStrings.Components.WantToRead.text)) {
                         ForEach(viewModel.books.filter { $0.status == .wantToRead && $0.deletedDate == nil }) { book in
                             NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, progress: book.readingProgress / 100)) {
                                 BookCardView(book: book)
@@ -34,7 +34,7 @@ struct LibraryView: View {
                 }
 
                 if !viewModel.books.filter({ $0.status == .read && $0.deletedDate == nil }).isEmpty {
-                    Section(header: Text("Read")) {
+                    Section(header: Text(LocalizedStrings.Components.Read.text)) {
                         ForEach(viewModel.books.filter { $0.status == .read && $0.deletedDate == nil }) { book in
                             NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, progress: book.readingProgress / 100)) {
                                 BookCardView(book: book)
@@ -43,7 +43,7 @@ struct LibraryView: View {
                     }
                 }
             }
-            .navigationTitle("My Library")
+            .navigationTitle(LocalizedStrings.Book.MyLibrary.title)
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     NavigationLink(destination: AddBookView(viewModel: viewModel)) {
