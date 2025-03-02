@@ -11,7 +11,7 @@ struct StatusPickerView: View {
     @Binding var selectedStatus: BookStatus
     
     var body: some View {
-        Picker("Status", selection: $selectedStatus) {
+        Picker(LocalizedStrings.Components.Status.text, selection: $selectedStatus) {
             ForEach(BookStatus.allCases, id: \.self) { status in
                 Text(status.rawValue).tag(status)
             }
