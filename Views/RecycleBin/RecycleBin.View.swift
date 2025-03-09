@@ -12,6 +12,11 @@ struct RecycleBinView: View {
     @State private var selectedBooks: Set<UUID> = []
     @State private var isSelecting = false
 
+    private let columns = [
+        GridItem(.flexible(), spacing: 16),
+        GridItem(.flexible(), spacing: 16)
+    ]
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -35,20 +40,32 @@ struct RecycleBinView: View {
                     .padding()
                 }
 
-                List(selection: $selectedBooks) {
-                    ForEach(viewModel.books.filter { $0.deletedDate != nil }) { book in
-                        HStack {
-                            if isSelecting {
-                                Image(systemName: selectedBooks.contains(book.id) ? "checkmark.circle.fill" : "circle")
-                                    .foregroundColor(selectedBooks.contains(book.id) ? .blue : .gray)
-                            }
-                            NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, isFromRecycleBin: true, progress: book.readingProgress / 100)) {
-                                VStack(alignment: .leading) {
-                                    BookCardView(book: book)
+                ScrollView {
+                    if viewModel.books.filter({ $0.deletedDate != nil }).isEmpty {
+                        Text("No books in the Recycle Bin")
+                            .foregroundColor(.gray)
+                            .padding()
+                    } else {
+                        LazyVGrid(columns: columns, spacing: 16) {
+                            ForEach(viewModel.books.filter { $0.deletedDate != nil }) { book in
+                                VStack {
+                                    ZStack(alignment: .topTrailing) {
+                                        NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, isFromRecycleBin: true, progress: book.readingProgress / 100)) {
+                                            BookCardView(book: book)
+                                        }
 
-                                    if book.deletedDate != nil {
+                                        if isSelecting {
+                                            Image(systemName: selectedBooks.contains(book.id) ? "checkmark.circle.fill" : "circle")
+                                                .foregroundColor(selectedBooks.contains(book.id) ? .blue : .gray)
+                                                .padding(6)
+                                                .onTapGesture {
+                                                    toggleSelection(for: book)
+                                                }
+                                        }
+                                    }
+
+                                    if let deletedDate = book.deletedDate {
                                         let remainingDays = viewModel.daysUntilDeletion(for: book)
-
                                         Text("Permanently deleted in \(remainingDays) day\(remainingDays == 1 ? "" : "s")")
                                             .font(.caption)
                                             .foregroundColor(.red)
@@ -56,12 +73,7 @@ struct RecycleBinView: View {
                                 }
                             }
                         }
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            if isSelecting {
-                                toggleSelection(for: book)
-                            }
-                        }
+                        .padding()
                     }
                 }
             }
