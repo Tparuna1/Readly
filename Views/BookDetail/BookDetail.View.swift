@@ -12,13 +12,11 @@ struct BookDetailView: View {
     @State private var book: Book
     @Environment(\.dismiss) private var dismiss
     var isFromRecycleBin: Bool = false
-    let progress: Double
 
-    init(book: Book, viewModel: LibraryViewModel, isFromRecycleBin: Bool = false, progress: Double) {
+    init(book: Book, viewModel: LibraryViewModel, isFromRecycleBin: Bool = false) {
         self.viewModel = viewModel
         self._book = State(initialValue: book)
         self.isFromRecycleBin = isFromRecycleBin
-        self.progress = progress
     }
 
     var body: some View {
@@ -36,21 +34,30 @@ struct BookDetailView: View {
             }
 
             Section(header: Text(LocalizedStrings.Components.ReadingProgress.text)) {
-                Slider(value: $book.readingProgress, in: 0...100, step: 1)
-                    .onChange(of: book.readingProgress) { _ in
-                        viewModel.updateBook(book)
-                    }
-                Text("\(Int(book.readingProgress))%  \(LocalizedStrings.Components.Completed.text)")
-                    .font(.caption)
-                    .foregroundColor(.gray)
+                if book.totalPages > .zero {
+                    Text("Total Pages: \(book.totalPages)")
+                        .font(.caption)
+                        .foregroundColor(.spaceGrey)
+
+                    TextField(LocalizedStrings.Book.ReadPages.text, value: $book.readPages, formatter: NumberFormatter())
+                        .keyboardType(.numberPad)
+                        .onChange(of: book.readPages) { _ in
+                            book.readingProgress = (Double(book.readPages) / Double(book.totalPages)) * 100
+                            viewModel.updateBook(book)
+                        }
+                    
+                    Text("\(Int(book.readingProgress))%  \(LocalizedStrings.Components.Completed.text)")
+                        .font(.caption)
+                        .foregroundColor(.spaceGrey)
+                }
             }
 
             Section(header: Text(LocalizedStrings.Book.Notes.text)) {
                 TextEditor(text: $book.notes)
-                    .frame(minHeight: 100)
-                    .padding(4)
-                    .background(Color(.systemGray6))
-                    .cornerRadius(8)
+                    .frame(minHeight: Grid.Size.small.height)
+                    .padding(Grid.Spacing.xs3)
+                    .background(Color(.spaceGrey))
+                    .cornerRadius(Grid.Spacing.xs)
                     .onChange(of: book.notes) { _ in
                         viewModel.updateBook(book)
                     }
@@ -62,14 +69,14 @@ struct BookDetailView: View {
                         viewModel.restoreBook(book)
                         dismiss()
                     }
-                    .foregroundColor(.green)
+                    .foregroundColor(.darkGreen)
                 }
             } else {
                 Section {
                     Button(LocalizedStrings.Book.MoveToRecycleBin.button) {
                         viewModel.moveToRecycleBin(book)
                     }
-                    .foregroundColor(.red)
+                    .foregroundColor(.darkRed)
                 }
             }
         }

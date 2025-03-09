@@ -50,7 +50,7 @@ struct RecycleBinView: View {
                             ForEach(viewModel.books.filter { $0.deletedDate != nil }) { book in
                                 VStack {
                                     ZStack(alignment: .topTrailing) {
-                                        NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, isFromRecycleBin: true, progress: book.readingProgress / 100)) {
+                                        NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, isFromRecycleBin: true)) {
                                             BookCardView(book: book)
                                         }
 

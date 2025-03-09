@@ -31,3 +31,5 @@
 "book.restore.button" = "Restore";
 "book.delete.button" = "Delete";
 "book.recycle_bin.title" = "Recycle Bin";
+"book.total_pages.text" = "Total Pages";
+"book.read_pages.text" = "Read Pages";
