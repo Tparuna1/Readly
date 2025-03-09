@@ -32,5 +32,6 @@ public enum Grid {
         public static let mediumSmall: CGSize = .init(squareFrame: 120)
         public static let semiMedium: CGSize = .init(squareFrame: 150)
         public static let medium: CGSize = .init(squareFrame: 200)
+        public static let mediumLarge: CGSize = .init(squareFrame: 300)
     }
 }

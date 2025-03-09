@@ -17,7 +17,7 @@ struct BookCardView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(
-                        width: Grid.Size.small.width,
+                        width: Grid.Size.mediumSmall.width,
                         height: Grid.Size.semiMedium.height
                     )
                     .cornerRadius(Grid.CornerRadius.small)
@@ -26,7 +26,7 @@ struct BookCardView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(
-                        width: Grid.Size.small.width,
+                        width: Grid.Size.mediumSmall.width,
                         height: Grid.Size.semiMedium.height
                     )
                     .foregroundColor(.spaceGrey)

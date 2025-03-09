@@ -78,6 +78,8 @@ struct AddBookView: View {
                         
                         let progress = totalPagesInt > .zero ? (Double(readPagesInt) / Double(totalPagesInt)) * 100 : 0.0
 
+                        let finalImage = selectedImage?.resize(targetHeight: Grid.Size.mediumLarge.height)
+
                         let newBook = Book(
                             title: title,
                             author: author,
@@ -85,7 +87,7 @@ struct AddBookView: View {
                             totalPages: totalPagesInt,
                             readPages: readPagesInt,
                             readingProgress: progress,
-                            coverImageData: selectedImage?.jpegData(compressionQuality: 0.8)
+                            coverImageData: finalImage?.jpegData(compressionQuality: 0.8)
                         )
                         viewModel.addBook(newBook)
                         presentationMode.wrappedValue.dismiss()
