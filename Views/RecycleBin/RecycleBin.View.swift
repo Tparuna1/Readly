@@ -13,8 +13,8 @@ struct RecycleBinView: View {
     @State private var isSelecting = false
 
     private let columns = [
-        GridItem(.flexible(), spacing: 16),
-        GridItem(.flexible(), spacing: 16)
+        GridItem(.flexible(), spacing: Grid.Spacing.m),
+        GridItem(.flexible(), spacing: Grid.Spacing.m)
     ]
 
     var body: some View {
@@ -46,7 +46,7 @@ struct RecycleBinView: View {
                             .foregroundColor(.gray)
                             .padding()
                     } else {
-                        LazyVGrid(columns: columns, spacing: 16) {
+                        LazyVGrid(columns: columns, spacing: Grid.Spacing.m) {
                             ForEach(viewModel.books.filter { $0.deletedDate != nil }) { book in
                                 VStack {
                                     ZStack(alignment: .topTrailing) {
@@ -57,7 +57,7 @@ struct RecycleBinView: View {
                                         if isSelecting {
                                             Image(systemName: selectedBooks.contains(book.id) ? "checkmark.circle.fill" : "circle")
                                                 .foregroundColor(selectedBooks.contains(book.id) ? .blue : .gray)
-                                                .padding(6)
+                                                .padding(Grid.Spacing.xs2)
                                                 .onTapGesture {
                                                     toggleSelection(for: book)
                                                 }

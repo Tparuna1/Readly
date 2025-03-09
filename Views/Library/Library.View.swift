@@ -9,77 +9,74 @@ import SwiftUI
 
 struct LibraryView: View {
     @ObservedObject var viewModel: LibraryViewModel
+    @Environment(\.colorScheme) var colorScheme
 
     private let columns = [
-        GridItem(.flexible(), spacing: 16),
-        GridItem(.flexible(), spacing: 16)
+        GridItem(.flexible(), spacing: Grid.Spacing.m),
+        GridItem(.flexible(), spacing: Grid.Spacing.m)
     ]
 
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    if !viewModel.books.filter({ $0.status == .currentlyReading && $0.deletedDate == nil }).isEmpty {
-                        Text(LocalizedStrings.Components.CurrentlyReading.text)
-                            .font(.title2)
-                            .bold()
-                            .padding(.horizontal)
+        NavigationStack {
+            ZStack {
+                (colorScheme == .dark ? Color.darkBlue : Color.cottonWhite)
+                    .ignoresSafeArea()
 
-                        LazyVGrid(columns: columns, spacing: 16) {
-                            ForEach(viewModel.books.filter { $0.status == .currentlyReading && $0.deletedDate == nil }) { book in
-                                NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, progress: book.readingProgress / 100)) {
-                                    BookCardView(book: book)
-                                }
-                            }
-                        }
+                VStack {
+                    Text(LocalizedStrings.Book.MyLibrary.title)
+                        .font(.largeTitle)
+                        .bold()
+                        .foregroundColor(colorScheme == .dark ? Color.cottonWhite : Color.darkBlue)
+                        .padding(.top, Grid.Spacing.m)
                         .padding(.horizontal)
-                    }
+                        .frame(maxWidth: .infinity, alignment: .leading)
 
-                    if !viewModel.books.filter({ $0.status == .wantToRead && $0.deletedDate == nil }).isEmpty {
-                        Text(LocalizedStrings.Components.WantToRead.text)
-                            .font(.title2)
-                            .bold()
-                            .padding(.horizontal)
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: Grid.Spacing.l) {
+                            sectionView(title: LocalizedStrings.Components.CurrentlyReading.text,
+                                        books: viewModel.books.filter { $0.status == .currentlyReading && $0.deletedDate == nil })
 
-                        LazyVGrid(columns: columns, spacing: 16) {
-                            ForEach(viewModel.books.filter { $0.status == .wantToRead && $0.deletedDate == nil }) { book in
-                                NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, progress: book.readingProgress / 100)) {
-                                    BookCardView(book: book)
-                                }
-                            }
+                            sectionView(title: LocalizedStrings.Components.WantToRead.text,
+                                        books: viewModel.books.filter { $0.status == .wantToRead && $0.deletedDate == nil })
+
+                            sectionView(title: LocalizedStrings.Components.Read.text,
+                                        books: viewModel.books.filter { $0.status == .read && $0.deletedDate == nil })
                         }
-                        .padding(.horizontal)
-                    }
-
-                    if !viewModel.books.filter({ $0.status == .read && $0.deletedDate == nil }).isEmpty {
-                        Text(LocalizedStrings.Components.Read.text)
-                            .font(.title2)
-                            .bold()
-                            .padding(.horizontal)
-
-                        LazyVGrid(columns: columns, spacing: 16) {
-                            ForEach(viewModel.books.filter { $0.status == .read && $0.deletedDate == nil }) { book in
-                                NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, progress: book.readingProgress / 100)) {
-                                    BookCardView(book: book)
-                                }
-                            }
-                        }
-                        .padding(.horizontal)
+                        .padding(.top)
                     }
                 }
-                .padding(.top)
             }
-            .navigationTitle(LocalizedStrings.Book.MyLibrary.title)
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     NavigationLink(destination: AddBookView(viewModel: viewModel)) {
                         Image(systemName: "plus")
+                            .foregroundColor(colorScheme == .dark ? Color.cottonWhite : Color.darkBlue)
                     }
                 }
             }
         }
         .onAppear {
             viewModel.loadBooks()
+        }
+    }
+
+    @ViewBuilder
+    private func sectionView(title: String, books: [Book]) -> some View {
+        if !books.isEmpty {
+            Text(title)
+                .font(.title2)
+                .bold()
+                .foregroundColor(colorScheme == .dark ? Color.cottonWhite : Color.darkBlue)
+                .padding(.horizontal)
+
+            LazyVGrid(columns: columns, spacing: Grid.Spacing.m) {
+                ForEach(books) { book in
+                    NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, progress: book.readingProgress / 100)) {
+                        BookCardView(book: book)
+                    }
+                }
+            }
+            .padding(.horizontal)
         }
     }
 }
