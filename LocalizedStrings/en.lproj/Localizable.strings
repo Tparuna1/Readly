@@ -15,6 +15,9 @@
 "components.read.text" = "Read";
 "components.cancel.button" = "Cancel";
 "components.select.button" = "Select";
+"components.missing_information.title" = "Missing Information";
+"components.missing_information.text" = "Please fill in the Title, Author, and Total Pages fields";
+"components.ok.button" = "OK";
 
 // MARK: - Book
 "book.title.text" = "Title";

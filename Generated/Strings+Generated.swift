@@ -89,6 +89,16 @@ internal enum LocalizedStrings {
       /// Currently Reading
       internal static let text = LocalizedStrings.tr("localizable", "components.currently_reading.text", fallback: "Currently Reading")
     }
+    internal enum MissingInformation {
+      /// Please fill in the Title, Author, and Total Pages fields
+      internal static let text = LocalizedStrings.tr("localizable", "components.missing_information.text", fallback: "Please fill in the Title, Author, and Total Pages fields")
+      /// Missing Information
+      internal static let title = LocalizedStrings.tr("localizable", "components.missing_information.title", fallback: "Missing Information")
+    }
+    internal enum Ok {
+      /// OK
+      internal static let button = LocalizedStrings.tr("localizable", "components.ok.button", fallback: "OK")
+    }
     internal enum Read {
       /// Read
       internal static let text = LocalizedStrings.tr("localizable", "components.read.text", fallback: "Read")

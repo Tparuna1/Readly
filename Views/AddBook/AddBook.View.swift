@@ -8,6 +8,9 @@
 import SwiftUI
 import PhotosUI
 
+import SwiftUI
+import PhotosUI
+
 struct AddBookView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: LibraryViewModel
@@ -27,6 +30,8 @@ struct AddBookView: View {
     }
     @State private var selectedImage: UIImage?
     @State private var showImagePicker = false
+
+    @State private var showAlert = false
 
     var body: some View {
         NavigationView {
@@ -73,29 +78,36 @@ struct AddBookView: View {
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button(LocalizedStrings.Book.AddBook.button) {
-                        let totalPagesInt = Int(totalPages) ?? .zero
-                        let readPagesInt = Int(readPages) ?? .zero
-                        
-                        let progress = totalPagesInt > .zero ? (Double(readPagesInt) / Double(totalPagesInt)) * 100 : 0.0
+                        if title.isEmpty || author.isEmpty || totalPages.isEmpty {
+                            showAlert = true
+                        } else {
+                            let totalPagesInt = Int(totalPages) ?? .zero
+                            let readPagesInt = Int(readPages) ?? .zero
+                            
+                            let progress = totalPagesInt > .zero ? (Double(readPagesInt) / Double(totalPagesInt)) * 100 : 0.0
 
-                        let finalImage = selectedImage?.resize(targetHeight: Grid.Size.mediumLarge.height)
+                            let finalImage = selectedImage?.resize(targetHeight: Grid.Size.mediumLarge.height)
 
-                        let newBook = Book(
-                            title: title,
-                            author: author,
-                            status: status,
-                            totalPages: totalPagesInt,
-                            readPages: readPagesInt,
-                            readingProgress: progress,
-                            coverImageData: finalImage?.jpegData(compressionQuality: 0.8)
-                        )
-                        viewModel.addBook(newBook)
-                        presentationMode.wrappedValue.dismiss()
+                            let newBook = Book(
+                                title: title,
+                                author: author,
+                                status: status,
+                                totalPages: totalPagesInt,
+                                readPages: readPagesInt,
+                                readingProgress: progress,
+                                coverImageData: finalImage?.jpegData(compressionQuality: 0.8)
+                            )
+                            viewModel.addBook(newBook)
+                            presentationMode.wrappedValue.dismiss()
+                        }
                     }
                 }
             }
             .sheet(isPresented: $showImagePicker) {
                 ImagePicker(selectedImage: $selectedImage)
+            }
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text(LocalizedStrings.Components.MissingInformation.title), message: Text(LocalizedStrings.Components.MissingInformation.text), dismissButton: .default(Text(LocalizedStrings.Components.Ok.button)))
             }
         }
     }
