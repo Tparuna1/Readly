@@ -42,7 +42,7 @@ struct RecycleBinView: View {
 
                 ScrollView {
                     if viewModel.books.filter({ $0.deletedDate != nil }).isEmpty {
-                        Text("No books in the Recycle Bin")
+                        Text(LocalizedStrings.Book.NoBooksInRecycleBin.text)
                             .foregroundColor(.gray)
                             .padding()
                     } else {
@@ -50,7 +50,11 @@ struct RecycleBinView: View {
                             ForEach(viewModel.books.filter { $0.deletedDate != nil }) { book in
                                 VStack {
                                     ZStack(alignment: .topTrailing) {
-                                        NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, isFromRecycleBin: true)) {
+                                        if !isSelecting {
+                                            NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, isFromRecycleBin: true)) {
+                                                BookCardView(book: book)
+                                            }
+                                        } else {
                                             BookCardView(book: book)
                                         }
 

@@ -36,3 +36,4 @@
 "book.recycle_bin.title" = "Recycle Bin";
 "book.total_pages.text" = "Total Pages";
 "book.read_pages.text" = "Read Pages";
+"book.no_books_in_recycle_bin.text" = "No books in the Recycle Bin";
