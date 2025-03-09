@@ -35,8 +35,8 @@ struct AddBookView: View {
                         Image(uiImage: selectedImage)
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 200)
-                            .cornerRadius(10)
+                            .frame(height: Grid.Size.medium.height)
+                            .cornerRadius(Grid.CornerRadius.medium)
                     }
 
                     Button(LocalizedStrings.Book.SelectCoverImage.button) {

@@ -16,29 +16,35 @@ struct BookCardView: View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 100, height: 150)
-                    .cornerRadius(8)
+                    .frame(
+                        width: Grid.Size.small.width,
+                        height: Grid.Size.semiMedium.height
+                    )
+                    .cornerRadius(Grid.CornerRadius.small)
             } else {
                 Image(systemName: "book.closed")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 100, height: 150)
+                    .frame(
+                        width: Grid.Size.small.width,
+                        height: Grid.Size.semiMedium.height
+                    )
                     .foregroundColor(.gray)
             }
 
             Text(book.title)
                 .font(.headline)
                 .multilineTextAlignment(.center)
-                .padding(.top, 5)
+                .padding(.top, Grid.Spacing.xs2)
 
             Text(book.author)
                 .font(.subheadline)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
         }
-        .frame(width: 120)
+        .frame(width: Grid.Size.mediumSmall.width)
         .padding()
-        .background(Color.gray.opacity(0.2))
-        .cornerRadius(12)
+        .background(Color.spaceGrey.opacity(Grid.Opacity.thin))
+        .cornerRadius(Grid.Spacing.s)
     }
 }
