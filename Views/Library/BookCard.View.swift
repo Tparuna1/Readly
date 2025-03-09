@@ -29,7 +29,7 @@ struct BookCardView: View {
                         width: Grid.Size.small.width,
                         height: Grid.Size.semiMedium.height
                     )
-                    .foregroundColor(.gray)
+                    .foregroundColor(.spaceGrey)
             }
 
             Text(book.title)
@@ -41,6 +41,13 @@ struct BookCardView: View {
                 .font(.subheadline)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
+
+            if book.status == .currentlyReading || book.status == .read {
+                Text("\(Int(book.readingProgress))% \(LocalizedStrings.Components.Completed.text)")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                    .padding(.top, Grid.Spacing.xs2)
+            }
         }
         .frame(width: Grid.Size.mediumSmall.width)
         .padding()

@@ -71,7 +71,7 @@ struct LibraryView: View {
 
             LazyVGrid(columns: columns, spacing: Grid.Spacing.m) {
                 ForEach(books) { book in
-                    NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, progress: book.readingProgress / 100)) {
+                    NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel)) {
                         BookCardView(book: book)
                     }
                 }
