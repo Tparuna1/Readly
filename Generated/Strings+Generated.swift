@@ -39,6 +39,10 @@ internal enum LocalizedStrings {
       /// My Library
       internal static let title = LocalizedStrings.tr("localizable", "book.my_library.title", fallback: "My Library")
     }
+    internal enum NoBooksInRecycleBin {
+      /// No books in the Recycle Bin
+      internal static let text = LocalizedStrings.tr("localizable", "book.no_books_in_recycle_bin.text", fallback: "No books in the Recycle Bin")
+    }
     internal enum Notes {
       /// Notes
       internal static let text = LocalizedStrings.tr("localizable", "book.notes.text", fallback: "Notes")
