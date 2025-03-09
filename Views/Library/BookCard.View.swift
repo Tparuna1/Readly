@@ -11,30 +11,34 @@ struct BookCardView: View {
     let book: Book
 
     var body: some View {
-        HStack {
+        VStack {
             if let imageData = book.coverImageData, let uiImage = UIImage(data: imageData) {
                 Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 50, height: 75)
-                    .cornerRadius(5)
+                    .frame(width: 100, height: 150)
+                    .cornerRadius(8)
             } else {
                 Image(systemName: "book.closed")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 50, height: 75)
+                    .frame(width: 100, height: 150)
                     .foregroundColor(.gray)
             }
 
-            VStack(alignment: .leading) {
-                Text(book.title)
-                    .font(.headline)
-                Text(book.author)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-            }
+            Text(book.title)
+                .font(.headline)
+                .multilineTextAlignment(.center)
+                .padding(.top, 5)
 
-            Spacer()
+            Text(book.author)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
         }
+        .frame(width: 120)
+        .padding()
+        .background(Color.gray.opacity(0.2))
+        .cornerRadius(12)
     }
 }
