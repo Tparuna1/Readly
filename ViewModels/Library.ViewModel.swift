@@ -5,13 +5,19 @@
 //  Created by tornike <parunashvili on 01.03.25.
 //
 
-import Foundation
+import SwiftUI
 
 class LibraryViewModel: ObservableObject {
     @Published var books: [Book] = []
+    @AppStorage("isDarkMode") var isDarkMode: Bool = false
 
     init() {
         loadBooks()
+    }
+    
+    func toggleDarkMode() {
+        isDarkMode.toggle()
+        UIApplication.shared.windows.first?.overrideUserInterfaceStyle = isDarkMode ? .dark : .light
     }
 
     func addBook(_ book: Book) {

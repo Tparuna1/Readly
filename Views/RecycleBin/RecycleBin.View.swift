@@ -19,74 +19,80 @@ struct RecycleBinView: View {
 
     var body: some View {
         NavigationStack {
-            VStack {
-                if isSelecting {
-                    HStack {
-                        Button("\(LocalizedStrings.Book.Restore.button) \(selectedBooks.count)") {
-                            restoreSelectedBooks()
-                        }
-                        .disabled(selectedBooks.isEmpty)
-                        .buttonStyle(.borderedProminent)
+            ZStack {
+                (viewModel.isDarkMode ? Color.darkBlue : Color.cottonWhite)
+                    .ignoresSafeArea()
 
-                        Spacer()
-
-                        Button("\(LocalizedStrings.Book.Delete.button) \(selectedBooks.count)") {
-                            deleteSelectedBooks()
-                        }
-                        .disabled(selectedBooks.isEmpty)
-                        .buttonStyle(.bordered)
-                        .foregroundColor(.red)
-                    }
-                    .padding()
-                }
-
-                ScrollView {
-                    if viewModel.books.filter({ $0.deletedDate != nil }).isEmpty {
-                        Text(LocalizedStrings.Book.NoBooksInRecycleBin.text)
-                            .foregroundColor(.gray)
-                            .padding()
-                    } else {
-                        LazyVGrid(columns: columns, spacing: Grid.Spacing.m) {
-                            ForEach(viewModel.books.filter { $0.deletedDate != nil }) { book in
-                                VStack {
-                                    ZStack(alignment: .topTrailing) {
-                                        if !isSelecting {
-                                            NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, isFromRecycleBin: true)) {
-                                                BookCardView(book: book)
-                                            }
-                                        } else {
-                                            BookCardView(book: book)
-                                        }
-
-                                        if isSelecting {
-                                            Image(systemName: selectedBooks.contains(book.id) ? "checkmark.circle.fill" : "circle")
-                                                .foregroundColor(selectedBooks.contains(book.id) ? .blue : .gray)
-                                                .padding(Grid.Spacing.xs2)
-                                                .onTapGesture {
-                                                    toggleSelection(for: book)
-                                                }
-                                        }
-                                    }
-
-                                    if let deletedDate = book.deletedDate {
-                                        let remainingDays = viewModel.daysUntilDeletion(for: book)
-                                        Text("Permanently deleted in \(remainingDays) day\(remainingDays == 1 ? "" : "s")")
-                                            .font(.caption)
-                                            .foregroundColor(.red)
-                                    }
-                                }
+                VStack {
+                    TitleView(title: LocalizedStrings.Book.RecycleBin.title)
+                        
+                    if isSelecting {
+                        HStack {
+                            Button("\(LocalizedStrings.Book.Restore.button) \(selectedBooks.count)") {
+                                restoreSelectedBooks()
                             }
+                            .disabled(selectedBooks.isEmpty)
+                            .buttonStyle(.borderedProminent)
+
+                            Spacer()
+
+                            Button("\(LocalizedStrings.Book.Delete.button) \(selectedBooks.count)") {
+                                deleteSelectedBooks()
+                            }
+                            .disabled(selectedBooks.isEmpty)
+                            .buttonStyle(.bordered)
+                            .foregroundColor(.darkRed)
                         }
                         .padding()
                     }
+
+                    ScrollView {
+                        if viewModel.books.filter({ $0.deletedDate != nil }).isEmpty {
+                            Text(LocalizedStrings.Book.NoBooksInRecycleBin.text)
+                                .foregroundColor(.gray)
+                                .padding()
+                        } else {
+                            LazyVGrid(columns: columns, spacing: Grid.Spacing.m) {
+                                ForEach(viewModel.books.filter { $0.deletedDate != nil }) { book in
+                                    VStack {
+                                        ZStack(alignment: .topTrailing) {
+                                            if !isSelecting {
+                                                NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, isFromRecycleBin: true)) {
+                                                    BookCardView(book: book)
+                                                }
+                                            } else {
+                                                BookCardView(book: book)
+                                            }
+
+                                            if isSelecting {
+                                                Image(systemName: selectedBooks.contains(book.id) ? "checkmark.circle.fill" : "circle")
+                                                    .foregroundColor(selectedBooks.contains(book.id) ? .darkBlue : .spaceGrey)
+                                                    .padding(Grid.Spacing.xs2)
+                                                    .onTapGesture {
+                                                        toggleSelection(for: book)
+                                                    }
+                                            }
+                                        }
+
+                                        if let deletedDate = book.deletedDate {
+                                            let remainingDays = viewModel.daysUntilDeletion(for: book)
+                                            Text("Permanently deleted in \(remainingDays) day\(remainingDays == 1 ? "" : "s")")
+                                                .font(.caption)
+                                                .foregroundColor(.darkRed)
+                                        }
+                                    }
+                                }
+                            }
+                            .padding()
+                        }
+                    }
                 }
-            }
-            .navigationTitle(LocalizedStrings.Book.RecycleBin.title)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(isSelecting ? LocalizedStrings.Components.Cancel.button : LocalizedStrings.Components.Select.button) {
-                        isSelecting.toggle()
-                        selectedBooks.removeAll()
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(isSelecting ? LocalizedStrings.Components.Cancel.button : LocalizedStrings.Components.Select.button) {
+                            isSelecting.toggle()
+                            selectedBooks.removeAll()
+                        }
                     }
                 }
             }

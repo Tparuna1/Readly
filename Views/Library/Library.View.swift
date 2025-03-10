@@ -23,13 +23,7 @@ struct LibraryView: View {
                     .ignoresSafeArea()
 
                 VStack {
-                    Text(LocalizedStrings.Book.MyLibrary.title)
-                        .font(.largeTitle)
-                        .bold()
-                        .foregroundColor(colorScheme == .dark ? Color.cottonWhite : Color.darkBlue)
-                        .padding(.top, Grid.Spacing.m)
-                        .padding(.horizontal)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    TitleView(title: LocalizedStrings.Book.MyLibrary.title)
 
                     ScrollView {
                         VStack(alignment: .leading, spacing: Grid.Spacing.l) {
@@ -46,17 +40,24 @@ struct LibraryView: View {
                     }
                 }
             }
+            .onAppear {
+                viewModel.loadBooks()
+            }
             .toolbar {
-                ToolbarItem(placement: .primaryAction) {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: viewModel.toggleDarkMode) {
+                        Image(systemName: viewModel.isDarkMode ? "sun.max.fill" : "moon.fill")
+                            .foregroundColor(viewModel.isDarkMode ? Color.cottonWhite : Color.darkBlue)
+                    }
+                }
+
+                ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: AddBookView(viewModel: viewModel)) {
                         Image(systemName: "plus")
-                            .foregroundColor(colorScheme == .dark ? Color.cottonWhite : Color.darkBlue)
+                            .foregroundColor(viewModel.isDarkMode ? Color.cottonWhite : Color.darkBlue)
                     }
                 }
             }
-        }
-        .onAppear {
-            viewModel.loadBooks()
         }
     }
 
@@ -66,7 +67,7 @@ struct LibraryView: View {
             Text(title)
                 .font(.title2)
                 .bold()
-                .foregroundColor(colorScheme == .dark ? Color.cottonWhite : Color.darkBlue)
+                .foregroundColor(viewModel.isDarkMode ? Color.cottonWhite : Color.darkBlue)
                 .padding(.horizontal)
 
             LazyVGrid(columns: columns, spacing: Grid.Spacing.m) {
