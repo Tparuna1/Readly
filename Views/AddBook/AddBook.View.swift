@@ -8,9 +8,6 @@
 import SwiftUI
 import PhotosUI
 
-import SwiftUI
-import PhotosUI
-
 struct AddBookView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: LibraryViewModel
@@ -34,81 +31,51 @@ struct AddBookView: View {
     @State private var showAlert = false
 
     var body: some View {
-        NavigationView {
-            Form {
-                TextField(LocalizedStrings.Book.Title.text, text: $title)
-                TextField(LocalizedStrings.Book.Author.text, text: $author)
+        ZStack {
+            (viewModel.isDarkMode ? Color.darkBlue : Color.cottonWhite)
+                .ignoresSafeArea()
+
+            VStack {
+                TitleView(title: LocalizedStrings.Book.AddBook.button)
+
+                BookFormView(title: $title, author: $author, totalPages: $totalPages, readPages: $readPages, status: $status, selectedImage: $selectedImage, showImagePicker: $showImagePicker)
                 
-                TextField(LocalizedStrings.Book.TotalPages.text, text: $totalPages)
-                    .keyboardType(.numberPad)
-                TextField(LocalizedStrings.Book.ReadPages.text, text: $readPages)
-                    .keyboardType(.numberPad)
-                    .onChange(of: readPages) { _ in
-                        if let readPagesInt = Int(readPages), readPagesInt > .zero {
-                            status = .currentlyReading
-                        } else {
-                            status = .wantToRead
+                .toolbar {
+                    ToolbarItem(placement: .primaryAction) {
+                        Button(LocalizedStrings.Book.AddBook.button) {
+                            if title.isEmpty || author.isEmpty || totalPages.isEmpty {
+                                showAlert = true
+                            } else {
+                                let totalPagesInt = Int(totalPages) ?? .zero
+                                let readPagesInt = Int(readPages) ?? .zero
+                                
+                                let progress = totalPagesInt > .zero ? (Double(readPagesInt) / Double(totalPagesInt)) * 100 : 0.0
+
+                                let finalImage = selectedImage?.resize(targetHeight: Grid.Size.mediumLarge.height)
+
+                                let newBook = Book(
+                                    title: title,
+                                    author: author,
+                                    status: status,
+                                    totalPages: totalPagesInt,
+                                    readPages: readPagesInt,
+                                    readingProgress: progress,
+                                    coverImageData: finalImage?.jpegData(compressionQuality: 0.8)
+                                )
+                                viewModel.addBook(newBook)
+                                presentationMode.wrappedValue.dismiss()
+                            }
                         }
-                    }
-
-                Picker(LocalizedStrings.Components.Status.text, selection: $status) {
-                    ForEach(BookStatus.allCases, id: \.self) { status in
-                        Text(status.rawValue).tag(status)
-                    }
-                }
-                .onChange(of: status) { newStatus in
-                    status = newStatus
-                }
-
-                Section(header: Text(LocalizedStrings.Book.BookCover.text)) {
-                    if let selectedImage = selectedImage {
-                        Image(uiImage: selectedImage)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: Grid.Size.medium.height)
-                            .cornerRadius(Grid.CornerRadius.medium)
-                    }
-
-                    Button(LocalizedStrings.Book.SelectCoverImage.button) {
-                        showImagePicker = true
+                        .foregroundColor(viewModel.isDarkMode ? Color.cottonWhite : Color.darkBlue)
                     }
                 }
             }
-            .navigationTitle(LocalizedStrings.Book.AddBook.button)
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    Button(LocalizedStrings.Book.AddBook.button) {
-                        if title.isEmpty || author.isEmpty || totalPages.isEmpty {
-                            showAlert = true
-                        } else {
-                            let totalPagesInt = Int(totalPages) ?? .zero
-                            let readPagesInt = Int(readPages) ?? .zero
-                            
-                            let progress = totalPagesInt > .zero ? (Double(readPagesInt) / Double(totalPagesInt)) * 100 : 0.0
-
-                            let finalImage = selectedImage?.resize(targetHeight: Grid.Size.mediumLarge.height)
-
-                            let newBook = Book(
-                                title: title,
-                                author: author,
-                                status: status,
-                                totalPages: totalPagesInt,
-                                readPages: readPagesInt,
-                                readingProgress: progress,
-                                coverImageData: finalImage?.jpegData(compressionQuality: 0.8)
-                            )
-                            viewModel.addBook(newBook)
-                            presentationMode.wrappedValue.dismiss()
-                        }
-                    }
-                }
-            }
-            .sheet(isPresented: $showImagePicker) {
-                ImagePicker(selectedImage: $selectedImage)
-            }
-            .alert(isPresented: $showAlert) {
-                Alert(title: Text(LocalizedStrings.Components.MissingInformation.title), message: Text(LocalizedStrings.Components.MissingInformation.text), dismissButton: .default(Text(LocalizedStrings.Components.Ok.button)))
-            }
+        }
+        .sheet(isPresented: $showImagePicker) {
+            ImagePicker(selectedImage: $selectedImage)
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text(LocalizedStrings.Components.MissingInformation.title), message: Text(LocalizedStrings.Components.MissingInformation.text), dismissButton: .default(Text(LocalizedStrings.Components.Ok.button)))
         }
     }
 }

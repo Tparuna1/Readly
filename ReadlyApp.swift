@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct ReadlyApp: App {
     @StateObject private var viewModel = LibraryViewModel()
+    @AppStorage("isDarkMode") private var isDarkMode: Bool = false
 
     var body: some Scene {
         WindowGroup {
@@ -24,7 +25,7 @@ struct ReadlyApp: App {
                         Label("Recycle Bin", systemImage: "trash.fill")
                     }
             }
+            .preferredColorScheme(isDarkMode ? .dark : .light)
         }
     }
 }
-
