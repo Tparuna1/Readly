@@ -10,6 +10,7 @@ import SwiftUI
 struct LibraryView: View {
     @ObservedObject var viewModel: LibraryViewModel
     @Environment(\.colorScheme) var colorScheme
+    @State private var navigateToAddBook = false
 
     private let columns = [
         GridItem(.flexible(), spacing: Grid.Spacing.m),
@@ -50,26 +51,34 @@ struct LibraryView: View {
                             .foregroundColor(viewModel.isDarkMode ? Color.cottonWhite : Color.darkBlue)
                     }
                 }
-
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: AddBookView(viewModel: viewModel)) {
+                    Button {
+                        navigateToAddBook = true
+                    } label: {
                         Image(systemName: "plus")
                             .foregroundColor(viewModel.isDarkMode ? Color.cottonWhite : Color.darkBlue)
                     }
                 }
+            }
+            .navigationDestination(isPresented: $navigateToAddBook) {
+                AddBookView(viewModel: viewModel)
             }
         }
     }
 
     @ViewBuilder
     private func sectionView(title: String, books: [Book]) -> some View {
-        if !books.isEmpty {
-            Text(title)
-                .font(.title2)
-                .bold()
-                .foregroundColor(viewModel.isDarkMode ? Color.cottonWhite : Color.darkBlue)
-                .padding(.horizontal)
+        Text(title)
+            .font(.title2)
+            .bold()
+            .foregroundColor(viewModel.isDarkMode ? Color.cottonWhite : Color.darkBlue)
+            .padding(.horizontal)
 
+        if books.isEmpty {
+            PlaceholderCardView {
+                navigateToAddBook = true
+            }
+        } else {
             LazyVGrid(columns: columns, spacing: Grid.Spacing.m) {
                 ForEach(books) { book in
                     NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel)) {

@@ -16,6 +16,7 @@ public enum Grid {
         public static let s: CGFloat = 12.0
         public static let m: CGFloat = 16.0
         public static let l: CGFloat = 20.0
+        public static let xl: CGFloat = 32.0
     }
 
     public enum Opacity {

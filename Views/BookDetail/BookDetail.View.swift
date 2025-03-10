@@ -96,9 +96,6 @@ struct BookDetailView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .onAppear {
-                UIView.appearance().semanticContentAttribute = .forceRightToLeft
-            }
         }
     }
 }
