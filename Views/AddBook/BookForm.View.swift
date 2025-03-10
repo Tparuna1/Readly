@@ -39,29 +39,30 @@ struct BookFormView: View {
                     }
                 }
                 .foregroundColor(colorScheme == .dark ? Color.cottonWhite : Color.darkBlue)
-
+            
             Picker(LocalizedStrings.Components.Status.text, selection: $status) {
                 ForEach(BookStatus.allCases, id: \.self) { status in
                     Text(status.rawValue).tag(status)
                 }
             }
             .foregroundColor(colorScheme == .dark ? Color.cottonWhite : Color.darkBlue)
-
+            
             Section(header: Text(LocalizedStrings.Book.BookCover.text)
-                        .foregroundColor(colorScheme == .dark ? Color.cottonWhite : Color.darkBlue)) {
-                if let selectedImage = selectedImage {
-                    Image(uiImage: selectedImage)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: Grid.Size.medium.height)
-                        .cornerRadius(Grid.CornerRadius.medium)
+                .foregroundColor(colorScheme == .dark ? Color.cottonWhite : Color.darkBlue)) {
+                    if let selectedImage = selectedImage {
+                        Image(uiImage: selectedImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: Grid.Size.semiMedium.width, height: Grid.Size.medium.height)
+                            .clipped()
+                            .cornerRadius(Grid.CornerRadius.medium)
+                    }
+                    
+                    Button(LocalizedStrings.Book.SelectCoverImage.button) {
+                        showImagePicker = true
+                    }
+                    .foregroundColor(colorScheme == .dark ? Color.cottonWhite : Color.darkBlue)
                 }
-
-                Button(LocalizedStrings.Book.SelectCoverImage.button) {
-                    showImagePicker = true
-                }
-                .foregroundColor(colorScheme == .dark ? Color.cottonWhite : Color.darkBlue)
-            }
         }
         .background(colorScheme == .dark ? Color.darkBlue : Color.cottonWhite)
         .scrollContentBackground(.hidden)

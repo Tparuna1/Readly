@@ -15,11 +15,12 @@ struct BookCardView: View {
             if let imageData = book.coverImageData, let uiImage = UIImage(data: imageData) {
                 Image(uiImage: uiImage)
                     .resizable()
-                    .scaledToFit()
+                    .scaledToFill()
                     .frame(
                         width: Grid.Size.mediumSmall.width,
                         height: Grid.Size.semiMedium.height
                     )
+                    .clipped()
                     .cornerRadius(Grid.CornerRadius.small)
             } else {
                 Image(systemName: "book.closed")
