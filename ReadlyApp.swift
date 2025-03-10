@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct ReadlyApp: App {
     @StateObject private var viewModel = LibraryViewModel()
-    @AppStorage("isDarkMode") private var isDarkMode: Bool = false
+    @AppStorage("isDarkMode") private var isDarkMode: Bool = true
 
     var body: some Scene {
         WindowGroup {
