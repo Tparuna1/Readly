@@ -37,7 +37,7 @@ Readly is a SwiftUI-based iOS application designed to manage and organize your p
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/Readly.git
+   git clone https://github.com/Tparuna1/Readly.git
 2. Open Project in Xcode:
    ```bash
-   git clone https://github.com/your-username/Readly.git
+   git clone https://github.com/Tparuna1/Readly.git
