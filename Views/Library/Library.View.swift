@@ -55,7 +55,7 @@ struct LibraryView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: viewModel.toggleDarkMode) {
-                        Image(systemName: viewModel.isDarkMode ? "sun.max.fill" : "moon.fill")
+                        Image(systemName: viewModel.isDarkMode ? Image.sunMaxFill : Image.moonFill)
                             .foregroundColor(viewModel.isDarkMode ? Color.cottonWhite : Color.darkBlue)
                     }
                 }
@@ -63,7 +63,7 @@ struct LibraryView: View {
                     Button {
                         navigateToAddBook = true
                     } label: {
-                        Image(systemName: "plus")
+                        Image.plus
                             .foregroundColor(viewModel.isDarkMode ? Color.cottonWhite : Color.darkBlue)
                     }
                 }

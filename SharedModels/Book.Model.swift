@@ -28,7 +28,7 @@ struct Book: Identifiable, Codable {
     var notes: String
 
     // MARK: - Initializer
-    init(id: UUID = UUID(), title: String, author: String, status: BookStatus, totalPages: Int = 0, readPages: Int = 0, readingProgress: Double = 0.0, deletedDate: Date? = nil, coverImageData: Data? = nil, notes: String = "") {
+    init(id: UUID = UUID(), title: String, author: String, status: BookStatus, totalPages: Int = .zero, readPages: Int = .zero, readingProgress: Double = 0.0, deletedDate: Date? = nil, coverImageData: Data? = nil, notes: String = "") {
         self.id = id
         self.title = title
         self.author = author

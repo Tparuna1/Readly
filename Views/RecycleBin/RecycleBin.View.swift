@@ -75,7 +75,7 @@ struct RecycleBinView: View {
 
                                             // MARK: - Selection Indicator
                                             if isSelecting {
-                                                Image(systemName: selectedBooks.contains(book.id) ? "checkmark.circle.fill" : "circle")
+                                                Image(systemName: selectedBooks.contains(book.id) ? Image.checkmartCircleFill : Image.circle)
                                                     .foregroundColor(selectedBooks.contains(book.id) ? .darkBlue : .spaceGrey)
                                                     .padding(Grid.Spacing.xs2)
                                                     .onTapGesture {

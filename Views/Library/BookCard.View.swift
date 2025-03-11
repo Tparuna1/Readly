@@ -24,7 +24,7 @@ struct BookCardView: View {
                     .clipped()
                     .cornerRadius(Grid.CornerRadius.small)
             } else {
-                Image(systemName: "book.closed")
+                Image.bookClosed
                     .resizable()
                     .scaledToFit()
                     .frame(
