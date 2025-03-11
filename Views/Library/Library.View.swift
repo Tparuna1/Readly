@@ -7,11 +7,16 @@
 
 import SwiftUI
 
+// MARK: - LibraryView
+/// Main view for displaying different book categories (Currently Reading, Want to Read, Read)
+
 struct LibraryView: View {
+    // MARK: - Properties
     @ObservedObject var viewModel: LibraryViewModel
     @Environment(\.colorScheme) var colorScheme
     @State private var navigateToAddBook = false
 
+    // MARK: - Layout
     private let columns = [
         GridItem(.flexible(), spacing: Grid.Spacing.m),
         GridItem(.flexible(), spacing: Grid.Spacing.m)
@@ -19,6 +24,7 @@ struct LibraryView: View {
 
     var body: some View {
         NavigationStack {
+            // MARK: - Background and Title
             ZStack {
                 (colorScheme == .dark ? Color.darkBlue : Color.cottonWhite)
                     .ignoresSafeArea()
@@ -26,6 +32,7 @@ struct LibraryView: View {
                 VStack {
                     TitleView(title: LocalizedStrings.Book.MyLibrary.title)
 
+                    // MARK: - Book Sections
                     ScrollView {
                         VStack(alignment: .leading, spacing: Grid.Spacing.l) {
                             sectionView(title: LocalizedStrings.Components.CurrentlyReading.text,
@@ -44,10 +51,11 @@ struct LibraryView: View {
             .onAppear {
                 viewModel.loadBooks()
             }
+            // MARK: - Toolbar Actions
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: viewModel.toggleDarkMode) {
-                        Image(systemName: viewModel.isDarkMode ? "sun.max.fill" : "moon.fill")
+                        Image(systemName: viewModel.isDarkMode ? Image.sunMaxFill : Image.moonFill)
                             .foregroundColor(viewModel.isDarkMode ? Color.cottonWhite : Color.darkBlue)
                     }
                 }
@@ -55,17 +63,19 @@ struct LibraryView: View {
                     Button {
                         navigateToAddBook = true
                     } label: {
-                        Image(systemName: "plus")
+                        Image.plus
                             .foregroundColor(viewModel.isDarkMode ? Color.cottonWhite : Color.darkBlue)
                     }
                 }
             }
+            // MARK: - Navigation to Add Book
             .navigationDestination(isPresented: $navigateToAddBook) {
                 AddBookView(viewModel: viewModel)
             }
         }
     }
 
+    // MARK: - Section View for Book Categories
     @ViewBuilder
     private func sectionView(title: String, books: [Book]) -> some View {
         Text(title)
@@ -75,10 +85,12 @@ struct LibraryView: View {
             .padding(.horizontal)
 
         if books.isEmpty {
+            // MARK: - Placeholder View for Empty Sections
             PlaceholderCardView {
                 navigateToAddBook = true
             }
         } else {
+            // MARK: - Display Books in LazyVGrid
             LazyVGrid(columns: columns, spacing: Grid.Spacing.m) {
                 ForEach(books) { book in
                     NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel)) {

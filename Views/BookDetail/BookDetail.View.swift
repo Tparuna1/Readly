@@ -7,7 +7,11 @@
 
 import SwiftUI
 
+// MARK: - BookDetailView
+/// View for displaying detailed information of a book and allowing modifications to its properties
+
 struct BookDetailView: View {
+    // MARK: - Properties
     @ObservedObject var viewModel: LibraryViewModel
     @State private var book: Book
     @Environment(\.dismiss) private var dismiss
@@ -23,18 +27,22 @@ struct BookDetailView: View {
     var body: some View {
         NavigationStack {
             ZStack {
+                // MARK: - Background and Header
                 (viewModel.isDarkMode ? Color.darkBlue : Color.cottonWhite)
                     .ignoresSafeArea()
 
                 VStack {
                     TitleView(title: LocalizedStrings.Book.BookDetails.title)
-                    
+
+                    // MARK: - Book Form
                     Form {
+                        // MARK: - Book Information Fields
                         TextField(LocalizedStrings.Book.Title.text, text: $book.title)
                             .foregroundColor(viewModel.isDarkMode ? .cottonWhite : .darkBlue)
                         TextField(LocalizedStrings.Book.Author.text, text: $book.author)
                             .foregroundColor(viewModel.isDarkMode ? .cottonWhite : .darkBlue)
 
+                        // MARK: - Status Picker
                         Picker(LocalizedStrings.Components.Status.text, selection: $book.status) {
                             ForEach(BookStatus.allCases, id: \.self) { status in
                                 Text(status.rawValue).tag(status)
@@ -44,6 +52,7 @@ struct BookDetailView: View {
                             viewModel.updateBook(book)
                         }
 
+                        // MARK: - Reading Progress Section
                         Section(header: Text(LocalizedStrings.Components.ReadingProgress.text)) {
                             if book.totalPages > .zero {
                                 Text("\(LocalizedStrings.Book.TotalPages.text) \(book.totalPages)")
@@ -63,6 +72,7 @@ struct BookDetailView: View {
                             }
                         }
 
+                        // MARK: - Notes Section
                         Section(header: Text(LocalizedStrings.Book.Notes.text)) {
                             TextEditor(text: $book.notes)
                                 .frame(minHeight: Grid.Size.small.height)
@@ -73,6 +83,7 @@ struct BookDetailView: View {
                                 }
                         }
 
+                        // MARK: - Recycle Bin Actions
                         if isFromRecycleBin {
                             Section {
                                 Button(LocalizedStrings.Book.RestoreBook.button) {

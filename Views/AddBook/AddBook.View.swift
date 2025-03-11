@@ -8,7 +8,11 @@
 import SwiftUI
 import PhotosUI
 
+// MARK: - AddBookView
+/// View for adding a new book to the library, including form input and image selection.
+
 struct AddBookView: View {
+    // MARK: - Properties
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: LibraryViewModel
 
@@ -27,20 +31,23 @@ struct AddBookView: View {
     }
     @State private var selectedImage: UIImage?
     @State private var showImagePicker = false
-
     @State private var showAlert = false
 
     var body: some View {
         ZStack {
+            // MARK: - Background Color
             (viewModel.isDarkMode ? Color.darkBlue : Color.cottonWhite)
                 .ignoresSafeArea()
 
             VStack {
+                // MARK: - Header
                 TitleView(title: LocalizedStrings.Book.AddBook.button)
 
+                // MARK: - Book Form
                 BookFormView(title: $title, author: $author, totalPages: $totalPages, readPages: $readPages, status: $status, selectedImage: $selectedImage, showImagePicker: $showImagePicker)
                 
                 .toolbar {
+                    // MARK: - Add Book Button
                     ToolbarItem(placement: .primaryAction) {
                         Button(LocalizedStrings.Book.AddBook.button) {
                             if title.isEmpty || author.isEmpty || totalPages.isEmpty {
@@ -53,6 +60,7 @@ struct AddBookView: View {
 
                                 let finalImage = selectedImage?.resize(targetHeight: Grid.Size.mediumLarge.height)
 
+                                // MARK: - Creating New Book Object
                                 let newBook = Book(
                                     title: title,
                                     author: author,
@@ -71,9 +79,11 @@ struct AddBookView: View {
                 }
             }
         }
+        // MARK: - Image Picker
         .sheet(isPresented: $showImagePicker) {
             ImagePicker(selectedImage: $selectedImage)
         }
+        // MARK: - Validation Alert
         .alert(isPresented: $showAlert) {
             Alert(title: Text(LocalizedStrings.Components.MissingInformation.title), message: Text(LocalizedStrings.Components.MissingInformation.text), dismissButton: .default(Text(LocalizedStrings.Components.Ok.button)))
         }

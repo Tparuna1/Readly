@@ -17,12 +17,12 @@ struct ReadlyApp: App {
             TabView {
                 LibraryView(viewModel: viewModel)
                     .tabItem {
-                        Label("Library", systemImage: "book.fill")
+                        Label(LocalizedStrings.Book.MyLibrary.title, systemImage: Image.bookFill)
                     }
 
                 RecycleBinView(viewModel: viewModel)
                     .tabItem {
-                        Label("Recycle Bin", systemImage: "trash.fill")
+                        Label(LocalizedStrings.Book.RecycleBin.title, systemImage: Image.trashFill)
                     }
             }
             .preferredColorScheme(isDarkMode ? .dark : .light)

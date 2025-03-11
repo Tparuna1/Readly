@@ -7,11 +7,16 @@
 
 import SwiftUI
 
+// MARK: - RecycleBinView
+/// View for displaying books in the recycle bin, with options to restore or permanently delete them
+
 struct RecycleBinView: View {
+    // MARK: - Properties
     @ObservedObject var viewModel: LibraryViewModel
     @State private var selectedBooks: Set<UUID> = []
     @State private var isSelecting = false
 
+    // MARK: - Layout
     private let columns = [
         GridItem(.flexible(), spacing: Grid.Spacing.m),
         GridItem(.flexible(), spacing: Grid.Spacing.m)
@@ -19,6 +24,7 @@ struct RecycleBinView: View {
 
     var body: some View {
         NavigationStack {
+            // MARK: - Background and Title
             ZStack {
                 (viewModel.isDarkMode ? Color.darkBlue : Color.cottonWhite)
                     .ignoresSafeArea()
@@ -26,6 +32,7 @@ struct RecycleBinView: View {
                 VStack {
                     TitleView(title: LocalizedStrings.Book.RecycleBin.title)
                         
+                    // MARK: - Selection Controls
                     if isSelecting {
                         HStack {
                             Button("\(LocalizedStrings.Book.Restore.button) \(selectedBooks.count)") {
@@ -46,6 +53,7 @@ struct RecycleBinView: View {
                         .padding()
                     }
 
+                    // MARK: - Recycle Bin Content
                     ScrollView {
                         if viewModel.books.filter({ $0.deletedDate != nil }).isEmpty {
                             Text(LocalizedStrings.Book.NoBooksInRecycleBin.text)
@@ -56,6 +64,7 @@ struct RecycleBinView: View {
                                 ForEach(viewModel.books.filter { $0.deletedDate != nil }) { book in
                                     VStack {
                                         ZStack(alignment: .topTrailing) {
+                                            // MARK: - Book Card and Selection
                                             if !isSelecting {
                                                 NavigationLink(destination: BookDetailView(book: book, viewModel: viewModel, isFromRecycleBin: true)) {
                                                     BookCardView(book: book)
@@ -64,8 +73,9 @@ struct RecycleBinView: View {
                                                 BookCardView(book: book)
                                             }
 
+                                            // MARK: - Selection Indicator
                                             if isSelecting {
-                                                Image(systemName: selectedBooks.contains(book.id) ? "checkmark.circle.fill" : "circle")
+                                                Image(systemName: selectedBooks.contains(book.id) ? Image.checkmartCircleFill : Image.circle)
                                                     .foregroundColor(selectedBooks.contains(book.id) ? .darkBlue : .spaceGrey)
                                                     .padding(Grid.Spacing.xs2)
                                                     .onTapGesture {
@@ -74,6 +84,7 @@ struct RecycleBinView: View {
                                             }
                                         }
 
+                                        // MARK: - Deletion Countdown
                                         if let deletedDate = book.deletedDate {
                                             let remainingDays = viewModel.daysUntilDeletion(for: book)
                                             Text("Permanently deleted in \(remainingDays) day\(remainingDays == 1 ? "" : "s")")
@@ -87,6 +98,7 @@ struct RecycleBinView: View {
                         }
                     }
                 }
+                // MARK: - Toolbar Controls
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button(isSelecting ? LocalizedStrings.Components.Cancel.button : LocalizedStrings.Components.Select.button) {
@@ -99,6 +111,7 @@ struct RecycleBinView: View {
         }
     }
 
+    // MARK: - Helper Methods
     private func toggleSelection(for book: Book) {
         if selectedBooks.contains(book.id) {
             selectedBooks.remove(book.id)

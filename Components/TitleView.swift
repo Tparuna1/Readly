@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// Reusable Title component to use for  main Titles of Views
 struct TitleView: View {
     var title: String
     
