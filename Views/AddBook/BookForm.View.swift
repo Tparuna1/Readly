@@ -21,11 +21,13 @@ struct BookFormView: View {
     
     var body: some View {
         Form {
+            // MARK: - Book Information Fields
             TextField(LocalizedStrings.Book.Title.text, text: $title)
                 .foregroundColor(colorScheme == .dark ? Color.cottonWhite : Color.darkBlue)
             TextField(LocalizedStrings.Book.Author.text, text: $author)
                 .foregroundColor(colorScheme == .dark ? Color.cottonWhite : Color.darkBlue)
             
+            // MARK: - Page Count Fields
             TextField(LocalizedStrings.Book.TotalPages.text, text: $totalPages)
                 .keyboardType(.numberPad)
                 .foregroundColor(colorScheme == .dark ? Color.cottonWhite : Color.darkBlue)
@@ -40,6 +42,7 @@ struct BookFormView: View {
                 }
                 .foregroundColor(colorScheme == .dark ? Color.cottonWhite : Color.darkBlue)
             
+            // MARK: - Status Picker
             Picker(LocalizedStrings.Components.Status.text, selection: $status) {
                 ForEach(BookStatus.allCases, id: \.self) { status in
                     Text(status.rawValue).tag(status)
@@ -47,6 +50,7 @@ struct BookFormView: View {
             }
             .foregroundColor(colorScheme == .dark ? Color.cottonWhite : Color.darkBlue)
             
+            // MARK: - Book Cover Section
             Section(header: Text(LocalizedStrings.Book.BookCover.text)
                 .foregroundColor(colorScheme == .dark ? Color.cottonWhite : Color.darkBlue)) {
                     if let selectedImage = selectedImage {
@@ -58,6 +62,7 @@ struct BookFormView: View {
                             .cornerRadius(Grid.CornerRadius.medium)
                     }
                     
+                    // MARK: - Select Cover Button
                     Button(LocalizedStrings.Book.SelectCoverImage.button) {
                         showImagePicker = true
                     }

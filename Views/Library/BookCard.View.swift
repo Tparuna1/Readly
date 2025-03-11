@@ -12,6 +12,7 @@ struct BookCardView: View {
 
     var body: some View {
         VStack {
+            // MARK: - Book Cover
             if let imageData = book.coverImageData, let uiImage = UIImage(data: imageData) {
                 Image(uiImage: uiImage)
                     .resizable()
@@ -33,16 +34,19 @@ struct BookCardView: View {
                     .foregroundColor(.spaceGrey)
             }
 
+            // MARK: - Book Title
             Text(book.title)
                 .font(.headline)
                 .multilineTextAlignment(.center)
                 .padding(.top, Grid.Spacing.xs2)
 
+            // MARK: - Book Author
             Text(book.author)
                 .font(.subheadline)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
 
+            // MARK: - Reading Progress
             if book.status == .currentlyReading || book.status == .read {
                 Text("\(Int(book.readingProgress))% \(LocalizedStrings.Components.Completed.text)")
                     .font(.caption)

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// View Provides Placeholder with button action for empty sections in Library
 struct PlaceholderCardView: View {
     var action: () -> Void
 

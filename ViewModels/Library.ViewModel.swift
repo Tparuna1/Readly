@@ -11,15 +11,18 @@ class LibraryViewModel: ObservableObject {
     @Published var books: [Book] = []
     @AppStorage("isDarkMode") var isDarkMode: Bool = false
 
+    // MARK: - Initialization
     init() {
         loadBooks()
     }
     
+    // MARK: - Theme Management
     func toggleDarkMode() {
         isDarkMode.toggle()
         UIApplication.shared.windows.first?.overrideUserInterfaceStyle = isDarkMode ? .dark : .light
     }
 
+    // MARK: - Book Management
     func addBook(_ book: Book) {
         books.append(book)
         saveBooks()
@@ -32,6 +35,7 @@ class LibraryViewModel: ObservableObject {
         }
     }
 
+    // MARK: - Recycle Bin Management
     func moveToRecycleBin(_ book: Book) {
         if let index = books.firstIndex(where: { $0.id == book.id }) {
             books[index].deletedDate = Date()
@@ -51,6 +55,7 @@ class LibraryViewModel: ObservableObject {
         saveBooks()
     }
 
+    // MARK: - Persistence
     private func saveBooks() {
         PersistenceService.shared.saveBooks(books)
     }
@@ -60,7 +65,7 @@ class LibraryViewModel: ObservableObject {
         cleanUpRecycleBin()
     }
 
-    /// Delete books that have been in the recycle bin for more than 30 days
+    // MARK: - Recycle Bin Cleanup
     private func cleanUpRecycleBin() {
         let currentDate = Date()
         books.removeAll { book in
@@ -72,7 +77,7 @@ class LibraryViewModel: ObservableObject {
         saveBooks()
     }
 
-    /// Calculate remaining days before deletion
+    // MARK: - Helper Methods
     func daysUntilDeletion(for book: Book) -> Int {
         guard let deletedDate = book.deletedDate else { return 0 }
         let daysPassed = Calendar.current.dateComponents([.day], from: deletedDate, to: Date()).day ?? 0

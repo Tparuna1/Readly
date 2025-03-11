@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// Defines a grid system for spacing, borders, kerning, and sizes
+/// Defines a grid system for spacing, opacity, cornerRadius, and sizes
 public enum Grid {
     public enum Spacing {
         public static let xs3: CGFloat = 4.0
