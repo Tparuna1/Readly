@@ -1,6 +1,6 @@
 # Readly - Personal Library Management App
 
-Readly is a SwiftUI-based iOS application designed to manage and organize your personal book collection. The app allows users to easily categorize, track progress, and add or remove books from their library. Features include book CRUD operations, tracking reading progress, and managing a recycle bin for deleted books.
+Readly is a SwiftUI-based iOS application designed to manage and organize your personal book collection. The app allows users to easily categorize, track progress, and add or remove books from their library. Features include tracking reading progress, and managing a recycle bin for deleted books.
 
 ## Features
 
